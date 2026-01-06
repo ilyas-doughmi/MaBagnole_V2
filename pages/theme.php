@@ -1,45 +1,11 @@
 <?php
-require_once '../includes/guard.php';
+session_start();
+require_once "../Classes/db.php";
+require_once "../Classes/Theme.php";
 
-// Data for Themes/Categories
-$themes = [
-    [
-        'id' => 'Voyage',
-        'title' => 'Évasion & Roadtrips',
-        'subtitle' => 'Découvrez le monde',
-        'description' => 'Itinéraires panoramiques, joyaux cachés et guides de voyage pour votre prochaine aventure.',
-        'image' => 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop', // Roadtrip landscape
-        'icon' => 'fa-map-location-dot',
-        'color' => 'from-orange-400 to-red-500'
-    ],
-    [
-        'id' => 'Conseils',
-        'title' => 'Conseils & Astuces',
-        'subtitle' => 'Roulez malin',
-        'description' => 'Entretien, économie de carburant et guides pratiques pour une expérience de location sans souci.',
-        'image' => 'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?q=80&w=1000&auto=format&fit=crop', // Mechanic/Dashboard
-        'icon' => 'fa-screwdriver-wrench',
-        'color' => 'from-blue-400 to-indigo-500'
-    ],
-    [
-        'id' => 'News',
-        'title' => 'Nouveautés Flotte',
-        'subtitle' => 'Le garage',
-        'description' => 'Les derniers modèles arrivés chez MaBagnole, technologies embarquées et offres exclusives.',
-        'image' => 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000&auto=format&fit=crop', // Supercar
-        'icon' => 'fa-car-burst',
-        'color' => 'from-emerald-400 to-teal-500'
-    ],
-    [
-        'id' => 'Services',
-        'title' => 'Services Premium',
-        'subtitle' => 'L\'excellence',
-        'description' => 'Tout savoir sur la location longue durée, les services chauffeur et l\'assistance VIP.',
-        'image' => 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?q=80&w=1000&auto=format&fit=crop', // Business
-        'icon' => 'fa-handshake',
-        'color' => 'from-purple-400 to-pink-500'
-    ]
-];
+$db = DB::connect();
+$themeObj = new Theme($db);
+$themes = $themeObj->getThemes();
 ?>
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
@@ -122,9 +88,6 @@ $themes = [
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
                     </div>
 
-                    <div class="absolute top-8 left-8 w-14 h-14 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl flex items-center justify-center text-white group-hover:bg-brand-orange group-hover:border-brand-orange transition-colors duration-300 shadow-lg">
-                        <i class="fa-solid <?= $theme['icon'] ?> text-2xl"></i>
-                    </div>
 
                     <div class="absolute top-8 right-8 w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300">
                         <i class="fa-solid fa-arrow-right"></i>
@@ -132,14 +95,9 @@ $themes = [
 
                     <div class="absolute bottom-0 left-0 w-full p-8 md:p-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                         
-                        <div class="overflow-hidden mb-2">
-                            <span class="inline-block text-brand-orange font-bold text-xs uppercase tracking-[0.2em] transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 delay-100">
-                                <?= $theme['subtitle'] ?>
-                            </span>
-                        </div>
 
                         <h2 class="text-3xl md:text-4xl font-black text-white uppercase mb-4 leading-none">
-                            <?= $theme['title'] ?>
+                            <?= $theme['name'] ?>
                         </h2>
 
                         <p class="text-gray-300 text-sm font-medium leading-relaxed max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
