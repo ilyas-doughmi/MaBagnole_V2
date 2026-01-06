@@ -34,6 +34,7 @@ if(isset($_SESSION["id"])){
                 <?php if ($isConnected && (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin')): ?>
                 <a href="<?= $root_path ?>index.php" class="<?= isActivePublic('index.php', $current_page) ?>">ACCUEIL</a>
                 <a href="<?= $root_path ?>pages/vehicles.php" class="<?= isActivePublic('vehicles.php', $current_page) ?>">VÉHICULES</a>
+                <a href="<?= $root_path ?>pages/theme.php" class="<?= isActivePublic('theme.php', $current_page) ?>">THEMES</a>
                 <a href="<?= $root_path ?>pages/user/my-reservations.php" class="<?= isActivePublic('my-reservations.php', $current_page) ?>">MES RÉSERVATIONS</a>
                 <a href="<?= $root_path ?>pages/user/my-reviews.php" class="<?= isActivePublic('my-reviews.php', $current_page) ?>">MES AVIS</a>
                 <a href="<?= $root_path ?>pages/user/favorites.php" class="<?= isActivePublic('favorites.php', $current_page) ?>">MES FAVORIS</a>
