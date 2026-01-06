@@ -6,6 +6,14 @@ class Theme{
     private $media;
     private $description;
 
+    private $pdo;
+
+
+    public function __construct($pdo)
+    {
+        $this->pdo = $pdo;
+    }
+
 
     public function __set($name, $value)
     {
@@ -15,5 +23,23 @@ class Theme{
     public function __get($name)
     {
         return $this->$name;
+    }
+
+    public function createTheme()
+    {
+        $query = "INSERT INTO themes(name,image,description)
+                VALUES(:name,:image,:description)";
+        $stmt = $this->pdo->prepare($query);
+        
+        try{
+            $stmt->execute([
+                ":name" => $this->nom,
+                ":image" => $this->image,
+                ":description" => $this->description
+            ]);
+            return true;
+        }catch(PDOException){
+            return false;
+        }
     }
 }
