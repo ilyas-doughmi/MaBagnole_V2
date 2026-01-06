@@ -84,7 +84,7 @@ $themes = $themeObj->getThemes();
                 <a href="blog.php?category=<?= $theme['id'] ?>" class="group relative h-[400px] rounded-3xl overflow-hidden card-hover-effect bg-white border border-gray-100">
                     
                     <div class="absolute inset-0">
-                        <img src="<?= $theme['image'] ?>" alt="<?= $theme['title'] ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <img src="<?= $theme['image'] ?>"  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
                     </div>
 
