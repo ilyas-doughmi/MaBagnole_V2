@@ -24,4 +24,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             exit();
         }
     }
+
+    if(isset($_POST["edit_theme"]))
+    {
+        $theme->__set("name",$_POST["title"]);
+        $theme->__set("media",$_POST["image"]);
+        $theme->__set("description",$_POST["description"]);
+        $theme->__set("themeId",$_POST["theme_id"]);
+
+        if($theme->editTheme())
+        {
+            header("location: ../themes.php?msg=allgood");
+            exit();
+        }
+        else{
+            header("location: ../themes.php?msg=bad");
+            exit();
+        }
+    }
 }
