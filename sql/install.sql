@@ -158,3 +158,6 @@ CREATE TABLE comments(
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (article_id) REFERENCES articles(id)
 )
+
+
+ALTER TABLE articles ADD COLUMN author_id INT , ADD FOREIGN KEY (author_id) REFERENCES users(id);
