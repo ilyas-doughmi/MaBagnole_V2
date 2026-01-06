@@ -1,6 +1,7 @@
-<?php 
+<?php
 
-class article{
+class article
+{
     private $articleId;
     private $name;
     private $media;
@@ -20,7 +21,7 @@ class article{
     {
         $this->$name = $value;
     }
-    
+
     public function __get($name)
     {
         return $this->$name;
@@ -48,15 +49,27 @@ class article{
     {
         $query = "SELECT * FROM articles JOIN users ON users.id = articles.author_id WHERE theme_id = :themeId AND isApproved = 1";
         $stmt = $this->pdo->prepare($query);
-        try{
-                    $stmt->execute([
-            ":themeId" => $this->themeId
-        ]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }catch(PDOException $e){
+        try {
+            $stmt->execute([
+                ":themeId" => $this->themeId
+            ]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
             return false;
         }
+    }
 
-
+    public function approveArticle()
+    {
+        $query = "UPDATE articles SET isApproved = 1 WHERE theme_id = :theme_id";
+        $stmt = $this->pdo->prepare($query);
+        try {
+            $stmt->execute([
+                ":theme_id" => $this->themeId
+            ]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 }
