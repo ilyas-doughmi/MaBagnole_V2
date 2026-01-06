@@ -59,4 +59,17 @@ class Theme{
             return false;
         }
     }
+
+    public function getThemes()
+    {
+        $query = "SELECT * FROM themes";
+        $stmt = $this->pdo->prepare($query);
+        try{
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }catch(PDOException)
+        {
+            return false;
+        }
+    }
 }
