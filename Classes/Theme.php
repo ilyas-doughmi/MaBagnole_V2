@@ -42,4 +42,21 @@ class Theme{
             return false;
         }
     }
+
+    public function editTheme()
+    {
+        $query = "UPDATE themes SET name = :name, description = :description , image = :image WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        try {
+            $stmt->execute([
+                ':name' => $this->name,
+                ':description' => $this->description,
+                ':id' => $this->themeId,
+                ':image' => $this->media
+            ]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
