@@ -172,18 +172,6 @@ if (isset($_GET['edit'])) {
                     <label class="text-xs uppercase font-bold text-gray-500">Titre</label>
                     <input type="text" name="title" value="<?= $edit_theme['title'] ?>" class="w-full p-3 bg-gray-50 rounded border border-gray-200 font-bold outline-none" required>
                 </div>
-               <div>
-                    <label class="text-xs uppercase font-bold text-gray-500">Sous-titre</label>
-                    <input type="text" name="subtitle" value="<?= $edit_theme['subtitle'] ?>" class="w-full p-3 bg-gray-50 rounded border border-gray-200 font-bold outline-none">
-                </div>
-                <div>
-                    <label class="text-xs uppercase font-bold text-gray-500">Icône</label>
-                    <input type="text" name="icon" value="<?= $edit_theme['icon'] ?? '' ?>" class="w-full p-3 bg-gray-50 rounded border border-gray-200 font-bold outline-none">
-                </div>
-                <div>
-                    <label class="text-xs uppercase font-bold text-gray-500">Couleur (Gradient)</label>
-                    <input type="text" name="color" value="<?= $edit_theme['color'] ?? '' ?>" class="w-full p-3 bg-gray-50 rounded border border-gray-200 font-bold outline-none">
-                </div>
                 <div>
                     <label class="text-xs uppercase font-bold text-gray-500">Image URL</label>
                     <input type="url" name="image" value="<?= $edit_theme['image'] ?>" class="w-full p-3 bg-gray-50 rounded border border-gray-200 font-bold outline-none">
