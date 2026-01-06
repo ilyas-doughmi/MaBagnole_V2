@@ -1,53 +1,13 @@
 <?php
 session_start();
-// require_once "../../Classes/db.php";
-// require_once "../../Classes/Theme.php";
+require_once "../../Classes/db.php";
+require_once "../../Classes/Theme.php";
 
-// $db = DB::connect();
-// $themeObj = new Theme($db);
-// $themes = $themeObj->getThemes();
+$db = DB::connect();
+$themeObj = new Theme($db);
+$themes = $themeObj->getThemes();
 
-// MOCK DATA
-$themes = [
-    [
-        'theme_id' => 1,
-        'title' => 'Évasion & Roadtrips',
-        'subtitle' => 'Découvrez le monde',
-        'description' => 'Itinéraires panoramiques, joyaux cachés et guides de voyage pour votre prochaine aventure.',
-        'image' => 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop',
-        'icon' => 'fa-map-location-dot',
-        'color' => 'from-orange-400 to-red-500'
-    ],
-    [
-        'theme_id' => 2,
-        'title' => 'Conseils & Astuces',
-        'subtitle' => 'Roulez malin',
-        'description' => 'Entretien, économie de carburant et guides pratiques pour une expérience de location sans souci.',
-        'image' => 'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?q=80&w=1000&auto=format&fit=crop',
-        'icon' => 'fa-screwdriver-wrench',
-        'color' => 'from-blue-400 to-indigo-500'
-    ],
-    [
-        'theme_id' => 3,
-        'title' => 'Nouveautés Flotte',
-        'subtitle' => 'Le garage',
-        'description' => 'Les derniers modèles arrivés chez MaBagnole, technologies embarquées et offres exclusives.',
-        'image' => 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000&auto=format&fit=crop',
-        'icon' => 'fa-car-burst',
-        'color' => 'from-emerald-400 to-teal-500'
-    ],
-    [
-        'theme_id' => 4,
-        'title' => 'Services Premium',
-        'subtitle' => 'L\'excellence',
-        'description' => 'Tout savoir sur la location longue durée, les services chauffeur et l\'assistance VIP.',
-        'image' => 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?q=80&w=1000&auto=format&fit=crop',
-        'icon' => 'fa-handshake',
-        'color' => 'from-purple-400 to-pink-500'
-    ]
-];
 
-// Handle Mock Edit
 $edit_theme = null;
 if (isset($_GET['edit'])) {
     foreach ($themes as $theme) {
@@ -102,7 +62,6 @@ if (isset($_GET['edit'])) {
                             <th class="p-4">ID</th>
                             <th class="p-4">Image</th>
                             <th class="p-4">Titre</th>
-                            <th class="p-4">Sous-titre</th>
                             <th class="p-4">Description</th>
                             <th class="p-4 text-right">Actions</th>
                         </tr>
@@ -110,17 +69,16 @@ if (isset($_GET['edit'])) {
                     <tbody class="divide-y divide-gray-100">
                         <?php foreach($themes as $t): ?>
                         <tr class="hover:bg-gray-50 transition">
-                            <td class="p-4 font-bold text-gray-500">#<?= $t['theme_id'] ?></td>
+                            <td class="p-4 font-bold text-gray-500">#<?= $t['id'] ?></td>
                             <td class="p-4">
                                 <img src="<?= $t['image'] ?>" alt="Theme" class="w-16 h-10 object-cover rounded">
                             </td>
-                            <td class="p-4 font-bold"><?= $t['title'] ?></td>
-                            <td class="p-4 text-sm text-gray-500"><?= $t['subtitle'] ?></td>
+                            <td class="p-4 font-bold"><?= $t['name'] ?></td>
                             <td class="p-4 text-sm text-gray-600 truncate max-w-xs"><?= $t['description'] ?></td>
                             <td class="p-4 text-right space-x-2 flex justify-end">
-                                <a href="?edit=<?= $t['theme_id'] ?>" class="text-blue-500 hover:text-blue-700"><i class="fa-solid fa-pen"></i></a>
+                                <a href="?edit= <?= $t['id'] ?> " class="text-blue-500 hover:text-blue-700"><i class="fa-solid fa-pen"></i></a>
                                 <form action="actions/theme_action.php" method="POST" class="inline" onsubmit="return confirm('Êtes-vous sûr ?');">
-                                    <input type="hidden" name="theme_id" value="<?= $t['theme_id'] ?>">
+                                    <input type="hidden" name="theme_id" value="<?= $t['id'] ?>">
                                     <input type="hidden" name="action" value="delete"> 
                                     <button type="submit" name="delete_theme" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>
                                 </form>
