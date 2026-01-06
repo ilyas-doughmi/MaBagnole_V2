@@ -7,6 +7,7 @@ class article{
     private $description;
     private $isApprove;
     private $themeId;
+    private $author_id;
 
     private $pdo;
 
@@ -26,7 +27,7 @@ class article{
     }
     public function getArticlesPerTheme()
     {
-        $query = "SELECT * FROM articles WHERE theme_id = :themeId";
+        $query = "SELECT * FROM articles JOIN users ON users.id = articles.author_id WHERE theme_id = :themeId";
         $stmt = $this->pdo->prepare($query);
         try{
                     $stmt->execute([
