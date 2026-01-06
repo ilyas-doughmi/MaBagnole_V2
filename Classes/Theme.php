@@ -72,4 +72,18 @@ class Theme{
             return false;
         }
     }
+
+    public function deleteTheme()
+    {
+        $query = "DELETE FROM themes WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        try{
+            $stmt->execute([
+                ":id" => $this->themeId
+            ]);
+            return true;
+        }catch(PDOException){
+            return false;
+        }
+    }
 }
