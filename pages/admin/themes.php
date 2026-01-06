@@ -11,7 +11,7 @@ $themes = $themeObj->getThemes();
 $edit_theme = null;
 if (isset($_GET['edit'])) {
     foreach ($themes as $theme) {
-        if ($theme['theme_id'] == $_GET['edit']) {
+        if ($theme['id'] == $_GET['edit']) {
             $edit_theme = $theme;
             break;
         }
@@ -120,15 +120,15 @@ if (isset($_GET['edit'])) {
     <div id="editModal" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white w-full max-w-lg rounded-xl p-6">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="font-black text-xl uppercase">Modifier le thème #<?= $edit_theme['theme_id'] ?></h3>
+                <h3 class="font-black text-xl uppercase">Modifier le thème #<?= $edit_theme['id'] ?></h3>
                 <a href="themes.php" class="text-gray-400 hover:text-black">✕</a>
             </div>
             <form action="actions/theme_action.php" class="space-y-4" method="POST">
                 <input type="hidden" name="action" value="edit">
-                <input type="hidden" name="theme_id" value="<?= $edit_theme['theme_id'] ?>">
+                <input type="hidden" name="theme_id" value="<?= $edit_theme['id'] ?>">
                 <div>
                     <label class="text-xs uppercase font-bold text-gray-500">Titre</label>
-                    <input type="text" name="title" value="<?= $edit_theme['title'] ?>" class="w-full p-3 bg-gray-50 rounded border border-gray-200 font-bold outline-none" required>
+                    <input type="text" name="title" value="<?= $edit_theme['name'] ?>" class="w-full p-3 bg-gray-50 rounded border border-gray-200 font-bold outline-none" required>
                 </div>
                 <div>
                     <label class="text-xs uppercase font-bold text-gray-500">Image URL</label>
