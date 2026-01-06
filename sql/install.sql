@@ -97,3 +97,64 @@ INSERT INTO vehicle (brand, model, price_per_day, image, is_available, category_
 -- adding admin account
 
 INSERT INTO users(full_name,email,password,role) VALUES('ilyas','admin@gmail.com','$2y$10$V/w4Kt75wQuzokW9HqsRR.8oDRFZCRR7Rzv1AOlLwEBb2KdJyuF5u','admin');
+
+
+
+--- V2 mabagnole
+
+CREATE TABLE themes(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    image VARCHAR(255),
+    description TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE articles(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    media VARCHAR(255),
+    description TEXT,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    isApproved BOOLEAN DEFAULT 0,
+    theme_id INT,
+
+    FOREIGN KEY (theme_id) REFERENCES themes(id)
+);
+
+
+CREATE TABLE tag(
+    tagId INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE article_tag(
+    articleTagId INT PRIMARY KEY AUTO_INCREMENT,
+    tagId INT,
+    articleId INT,
+
+    FOREIGN KEY (tagId) REFERENCES tag(tagId),
+    FOREIGN KEY (articleId) REFERENCES articles(id)
+);
+
+CREATE TABLE favorites(
+    favorites INT PRIMARY KEY AUTO_INCREMENT,
+    article_id INT,
+    user_id INT,
+
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (article_id) REFERENCES articles(id)
+);
+
+CREATE TABLE comments(
+    commentId INT PRIMARY KEY AUTO_INCREMENT,
+    content TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_at DATETIME DEFAULT NULL,
+    user_id INT,
+    article_id INT,
+
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (article_id) REFERENCES articles(id)
+)
