@@ -21,6 +21,9 @@ function isActiveAdmin($page, $current) {
         <a href="categories.php" class="block px-6 py-3 <?= isActiveAdmin('categories.php', $current_page) ?>">
             <i class="fa-solid fa-tags w-6"></i> Catégories
         </a>
+        <a href="themes.php" class="block px-6 py-3 <?= isActiveAdmin('themes.php', $current_page) ?>">
+            <i class="fa-solid fa-layer-group w-6"></i> Thèmes
+        </a>
         <a href="reservations.php" class="block px-6 py-3 <?= isActiveAdmin('reservations.php', $current_page) ?>">
             <i class="fa-solid fa-calendar-check w-6"></i> Réservations
         </a>
