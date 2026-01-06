@@ -116,7 +116,7 @@ $posts = $articleObj->getArticlesPerTheme();
                                 <div class="flex items-center text-xs font-bold text-gray-400 mb-3 gap-2">
                                     <span class="text-locar-orange"><?= $post['createdAt'] ?></span>
                                     <span>•</span>
-                                    <span><?= $post["author_id"] ?></span>
+                                    <span><?= $post["full_name"] ?></span>
                                 </div>
                                 <h3 class="text-xl font-black text-gray-800 uppercase mb-3 leading-snug group-hover:text-locar-orange transition">
                                     <?= $post['name'] ?>
@@ -144,6 +144,14 @@ $posts = $articleObj->getArticlesPerTheme();
 
                 <aside class="lg:w-1/4 space-y-8">
                     
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <h4 class="font-black text-lg uppercase mb-4">Contribution</h4>
+                        <p class="text-xs text-gray-500 mb-4 font-bold">Partagez votre passion avec la communauté.</p>
+                        <a href="user/add-article.php" class="flex items-center justify-center w-full bg-locar-black text-white font-bold py-3 rounded hover:bg-locar-orange transition uppercase text-xs tracking-wider">
+                            <i class="fa-solid fa-plus mr-2"></i> Proposer un article
+                        </a>
+                    </div>
+
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h4 class="font-black text-lg uppercase mb-4">Recherche</h4>
                         <div class="relative">
