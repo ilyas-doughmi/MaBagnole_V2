@@ -33,8 +33,8 @@ class Theme{
         
         try{
             $stmt->execute([
-                ":name" => $this->nom,
-                ":image" => $this->image,
+                ":name" => $this->name,
+                ":image" => $this->media,
                 ":description" => $this->description
             ]);
             return true;
