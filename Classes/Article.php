@@ -14,4 +14,29 @@ class article{
     {
         $this->pdo = $pdo;
     }
+
+    public function __set($name, $value)
+    {
+        $this->$name = $value;
+    }
+    
+    public function __get($name)
+    {
+        return $this->$name;
+    }
+    public function getArticlesPerTheme()
+    {
+        $query = "SELECT * FROM articles WHERE theme_id = :themeId";
+        $stmt = $this->pdo->prepare($query);
+        try{
+                    $stmt->execute([
+            ":themeId" => $this->themeId
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }catch(PDOException $e){
+            return false;
+        }
+
+
+    }
 }
