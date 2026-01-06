@@ -25,9 +25,28 @@ class article{
     {
         return $this->$name;
     }
+
+    public function addArticle($author_id)
+    {
+        $query = "INSERT INTO articles (name, media, description, theme_id, author_id) VALUES (:name, :media, :description, :theme_id, :author_id)";
+        $stmt = $this->pdo->prepare($query);
+        try {
+            $stmt->execute([
+                ':name' => $this->name,
+                ':media' => $this->media,
+                ':description' => $this->description,
+                ':theme_id' => $this->themeId,
+                ':author_id' => $author_id
+            ]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function getArticlesPerTheme()
     {
-        $query = "SELECT * FROM articles JOIN users ON users.id = articles.author_id WHERE theme_id = :themeId";
+        $query = "SELECT * FROM articles JOIN users ON users.id = articles.author_id WHERE theme_id = :themeId AND isApproved = 1";
         $stmt = $this->pdo->prepare($query);
         try{
                     $stmt->execute([
