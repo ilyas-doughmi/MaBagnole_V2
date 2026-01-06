@@ -1,62 +1,15 @@
 <?php
 session_start();
-// Mock Data for Blog Posts since there is no DB table yet
-$posts = [
-    [
-        'id' => 1,
-        'title' => "Road Trip au Maroc : Les 10 plus belles routes",
-        'category' => 'Voyage',
-        'image' => 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?q=80&w=1000&auto=format&fit=crop',
-        'date' => '12 Jan 2025',
-        'excerpt' => 'Découvrez des paysages à couper le souffle, de l\'Atlas au Sahara, avec notre guide complet pour un road trip inoubliable.',
-        'author' => 'Amine B.'
-    ],
-    [
-        'id' => 2,
-        'title' => "Comment économiser du carburant en conduite urbaine",
-        'category' => 'Conseils',
-        'image' => 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=1000&auto=format&fit=crop',
-        'date' => '08 Jan 2025',
-        'excerpt' => 'Adoptez ces 5 habitudes simples pour réduire votre consommation et maximiser l\'autonomie de votre véhicule de location.',
-        'author' => 'Sarah L.'
-    ],
-    [
-        'id' => 3,
-        'title' => "Les avantages de la location longue durée",
-        'category' => 'Location',
-        'image' => 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-        'date' => '05 Jan 2025',
-        'excerpt' => 'Pourquoi acheter quand vous pouvez louer ? Découvrez la flexibilité et les économies offertes par nos offres LLD.',
-        'author' => 'Karim M.'
-    ],
-    [
-        'id' => 4,
-        'title' => "Maintenance : Les vérifications avant un long trajet",
-        'category' => 'Mécanique',
-        'image' => 'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?q=80&w=1000&auto=format&fit=crop',
-        'date' => '02 Jan 2025',
-        'excerpt' => 'Pneus, niveaux, freins... Voici la checklist ultime pour partir en toute sécurité avec votre famille.',
-        'author' => 'Technique'
-    ],
-    [
-        'id' => 5,
-        'title' => "Comparatif : SUV vs Berline pour les vacances",
-        'category' => 'Véhicules',
-        'image' => 'https://raw.githubusercontent.com/AChaoub/Fil_rouge_2020/master/Public/IMG/Img_voiture/Lexus.png',
-        'date' => '28 Dec 2024',
-        'excerpt' => 'Espace ou confort ? Consommation ou puissance ? Nous vous aidons à choisir le véhicule idéal.',
-        'author' => 'Redaction'
-    ],
-    [
-        'id' => 6,
-        'title' => "Nouveaux modèles Hybrides dans notre flotte",
-        'category' => 'News',
-        'image' => 'https://images.unsplash.com/photo-1593055498860-58d09e7c35ae?q=80&w=1000&auto=format&fit=crop',
-        'date' => '20 Dec 2024',
-        'excerpt' => 'MaBagnole s\'engage pour l\'environnement. Découvrez nos nouveaux modèles Toyota et Honda hybrides.',
-        'author' => 'Admin'
-    ]
-];
+require_once "../Classes/db.php";
+require_once "../Classes/Article.php";
+
+$db = DB::connect();
+$articleObj = new Article($db);
+if(isset($_GET["category"])){
+    $articleObj->__set("themeId",$_GET["category"]);
+}
+$posts = $articleObj->getArticlesPerTheme();
+
 ?>
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
@@ -123,19 +76,27 @@ $posts = [
                 
                 <div class="lg:w-3/4">
                     
+                    <?php if (empty($posts)): ?>
+                        <div class="text-center py-20">
+                            <i class="fa-solid fa-file-circle-xmark text-6xl text-gray-300 mb-4"></i>
+                            <h3 class="text-2xl font-bold text-gray-800">No article found</h3>
+                            <p class="text-gray-500 mt-2">Nous n'avons trouvé aucun article dans cette catégorie pour le moment.</p>
+                        </div>
+                    <?php else: ?>
+
                     <div class="group relative rounded-2xl overflow-hidden shadow-2xl mb-12 h-[400px] md:h-[500px]">
-                        <img src="<?= $posts[0]['image'] ?>" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+                        <img src="<?= $posts[0]['media'] ?>" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 p-8 md:p-12">
                             <span class="bg-locar-orange text-white text-xs font-bold px-3 py-1 rounded uppercase mb-3 inline-block">
-                                <?= $posts[0]['category'] ?>
+                                Article
                             </span>
                             <h2 class="text-3xl md:text-4xl font-black text-white uppercase mb-4 leading-tight group-hover:text-locar-orange transition">
-                                <?= $posts[0]['title'] ?>
+                                <?= $posts[0]['name'] ?>
                             </h2>
                             <div class="flex items-center text-gray-300 text-sm font-bold gap-4">
-                                <span><i class="fa-solid fa-user mr-2 text-locar-orange"></i> <?= $posts[0]['author'] ?></span>
-                                <span><i class="fa-solid fa-calendar mr-2 text-locar-orange"></i> <?= $posts[0]['date'] ?></span>
+                                <span><i class="fa-solid fa-user mr-2 text-locar-orange"></i> Admin</span>
+                                <span><i class="fa-solid fa-calendar mr-2 text-locar-orange"></i> <?= $posts[0]['createdAt'] ?></span>
                             </div>
                         </div>
                         <a href="#" class="absolute inset-0 z-20"></a>
@@ -146,22 +107,22 @@ $posts = [
                         <article class="bg-white rounded-2xl overflow-hidden shadow-card border border-gray-100 hover:shadow-neon hover:border-locar-orange/30 transition duration-300 group flex flex-col h-full">
                             <div class="relative h-56 overflow-hidden">
                                 <span class="absolute top-4 left-4 z-10 bg-black/80 backdrop-blur text-white text-[10px] font-bold px-3 py-1 rounded uppercase tracking-wider">
-                                    <?= $post['category'] ?>
+                                    Article
                                 </span>
-                                <img src="<?= $post['image'] ?>" alt="<?= $post['title'] ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                                <img src="<?= $post['media'] ?>" alt="<?= $post['name'] ?>" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
                             </div>
                             
                             <div class="p-8 flex-1 flex flex-col">
                                 <div class="flex items-center text-xs font-bold text-gray-400 mb-3 gap-2">
-                                    <span class="text-locar-orange"><?= $post['date'] ?></span>
+                                    <span class="text-locar-orange"><?= $post['createdAt'] ?></span>
                                     <span>•</span>
-                                    <span><?= $post['author'] ?></span>
+                                    <span>Admin</span>
                                 </div>
                                 <h3 class="text-xl font-black text-gray-800 uppercase mb-3 leading-snug group-hover:text-locar-orange transition">
-                                    <?= $post['title'] ?>
+                                    <?= $post['name'] ?>
                                 </h3>
                                 <p class="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3">
-                                    <?= $post['excerpt'] ?>
+                                    <?= $post['description'] ?>
                                 </p>
                                 <div class="mt-auto">
                                     <a href="#" class="inline-flex items-center text-sm font-black text-locar-black hover:text-locar-orange transition uppercase tracking-wide">
@@ -178,6 +139,7 @@ $posts = [
                         <button class="w-10 h-10 rounded bg-white border border-gray-200 text-gray-500 flex items-center justify-center font-bold hover:border-locar-orange hover:text-locar-orange transition">2</button>
                         <button class="w-10 h-10 rounded bg-white border border-gray-200 text-gray-500 flex items-center justify-center font-bold hover:border-locar-orange hover:text-locar-orange transition"><i class="fa-solid fa-chevron-right"></i></button>
                     </div>
+                    <?php endif; ?>
                 </div>
 
                 <aside class="lg:w-1/4 space-y-8">
