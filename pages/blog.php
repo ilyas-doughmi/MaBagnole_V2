@@ -116,7 +116,7 @@ $posts = $articleObj->getArticlesPerTheme();
                                 <div class="flex items-center text-xs font-bold text-gray-400 mb-3 gap-2">
                                     <span class="text-locar-orange"><?= $post['createdAt'] ?></span>
                                     <span>•</span>
-                                    <span>Admin</span>
+                                    <span><?= $post["author_id"] ?></span>
                                 </div>
                                 <h3 class="text-xl font-black text-gray-800 uppercase mb-3 leading-snug group-hover:text-locar-orange transition">
                                     <?= $post['name'] ?>
