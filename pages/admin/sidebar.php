@@ -24,6 +24,9 @@ function isActiveAdmin($page, $current) {
         <a href="themes.php" class="block px-6 py-3 <?= isActiveAdmin('themes.php', $current_page) ?>">
             <i class="fa-solid fa-layer-group w-6"></i> Thèmes
         </a>
+        <a href="articles.php" class="block px-6 py-3 <?= isActiveAdmin('articles.php', $current_page) ?>">
+            <i class="fa-solid fa-newspaper w-6"></i> Articles
+        </a>
         <a href="reservations.php" class="block px-6 py-3 <?= isActiveAdmin('reservations.php', $current_page) ?>">
             <i class="fa-solid fa-calendar-check w-6"></i> Réservations
         </a>
