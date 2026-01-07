@@ -86,4 +86,20 @@ class article
             return false;
         }
     }
+
+     public function getAllArticles()
+    {
+        $query = "SELECT articles.*, themes.name as theme_name, users.full_name as author_name 
+                  FROM articles 
+                  LEFT JOIN themes ON articles.theme_id = themes.id
+                  LEFT JOIN users ON articles.author_id = users.id
+                  ORDER BY createdAt DESC";
+        $stmt = $this->pdo->prepare($query);
+        try {
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
