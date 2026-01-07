@@ -39,6 +39,23 @@ class article
                 ':theme_id' => $this->themeId,
                 ':author_id' => $author_id
             ]);
+            return $this->pdo->lastInsertId();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function addTags($articleId, $tags)
+    {
+        $query = "INSERT INTO article_tag (articleId, tagId) VALUES (:articleId, :tagId)";
+        $stmt = $this->pdo->prepare($query);
+        try {
+            foreach($tags as $tagId){
+                $stmt->execute([
+                    ':articleId' => $articleId,
+                    ':tagId' => $tagId
+                ]);
+            }
             return true;
         } catch (PDOException $e) {
             return false;
