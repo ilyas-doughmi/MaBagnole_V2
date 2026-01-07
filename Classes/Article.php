@@ -59,13 +59,27 @@ class article
         }
     }
 
-    public function approveArticle()
+    public function approveArticle($id)
     {
-        $query = "UPDATE articles SET isApproved = 1 WHERE theme_id = :theme_id";
+        $query = "UPDATE articles SET isApproved = 1 WHERE id = :id";
         $stmt = $this->pdo->prepare($query);
         try {
             $stmt->execute([
-                ":theme_id" => $this->themeId
+                ":id" => $id
+            ]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function deleteArticle($id)
+    {
+        $query = "DELETE FROM articles WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        try {
+            $stmt->execute([
+                ":id" => $id
             ]);
             return true;
         } catch (PDOException $e) {
