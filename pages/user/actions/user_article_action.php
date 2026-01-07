@@ -17,7 +17,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $articleObj->__set('description', $_POST['description']);
     $articleObj->__set('themeId', $_POST['theme_id']); 
     
-    if ($articleObj->addArticle($_SESSION['id'])) {
+    $articleId = $articleObj->addArticle($_SESSION['id']);
+
+    if ($articleId) {
+        if (isset($_POST['tags']) && is_array($_POST['tags'])) {
+            $articleObj->addTags($articleId, $_POST['tags']);
+        }
         header("Location: ../add-article.php?status=success");
         exit();
     } else {
