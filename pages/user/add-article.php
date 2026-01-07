@@ -3,12 +3,16 @@ require_once '../../includes/guard.php';
 require_once '../../Classes/db.php';
 require_once '../../Classes/Theme.php';
 require_once '../../Classes/Article.php';
+require_once '../../Classes/Tag.php';
 
 require_login();
 
 $db = DB::connect();
 $themeObj = new Theme($db);
 $themes = $themeObj->getThemes();
+
+$tagObj = new Tag($db);
+$tags = $tagObj->getTags();
 
 $error = '';
 $success = '';
@@ -107,6 +111,32 @@ if (isset($_GET['status'])) {
                         <label for="image" class="block text-sm font-bold text-gray-700 mb-2">URL de l'image</label>
                         <input type="url" id="image" name="image" placeholder="https://..." required class="w-full px-4 py-3 rounded-lg bg-gray-50 border-transparent focus:border-locar-orange focus:bg-white focus:ring-0 transition text-sm font-bold">
                     </div>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-sm font-bold text-gray-700">Tags</label>
+                            <button type="button" id="selectAllTags" class="text-xs text-locar-orange font-bold hover:underline">Tout sélectionner</button>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <?php if($tags): ?>
+                                <?php foreach($tags as $tag): ?>
+                                    <label class="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition">
+                                        <input type="checkbox" name="tags[]" value="<?= $tag['tagId'] ?>" class="form-checkbox h-5 w-5 text-locar-orange rounded border-gray-300 focus:ring-locar-orange tag-checkbox">
+                                        <span class="text-sm font-medium text-gray-700"><?= $tag['name'] ?></span>
+                                    </label>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.getElementById('selectAllTags').addEventListener('click', function() {
+                            const checkboxes = document.querySelectorAll('.tag-checkbox');
+                            const allChecked = Array.from(checkboxes).every(c => c.checked);
+                            checkboxes.forEach(c => c.checked = !allChecked);
+                            this.textContent = allChecked ? 'Tout sélectionner' : 'Tout désélectionner';
+                        });
+                    </script>
 
                     <div class="mb-8">
                         <label for="description" class="block text-sm font-bold text-gray-700 mb-2">Contenu</label>
