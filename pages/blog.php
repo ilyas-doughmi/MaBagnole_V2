@@ -108,7 +108,7 @@ $posts = $articleObj->getArticlesPerTheme();
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <?php foreach(array_slice($posts, 1) as $post): ?>
+                        <?php foreach($posts as $post): ?>
                         <article class="bg-white rounded-2xl overflow-hidden shadow-card border border-gray-100 hover:shadow-neon hover:border-locar-orange/30 transition duration-300 group flex flex-col h-full">
                             <div class="relative h-56 overflow-hidden">
                                 <span class="absolute top-4 left-4 z-10 bg-black/80 backdrop-blur text-white text-[10px] font-bold px-3 py-1 rounded uppercase tracking-wider">
@@ -130,7 +130,7 @@ $posts = $articleObj->getArticlesPerTheme();
                                     <?= $post['description'] ?>
                                 </p>
                                 <div class="mt-auto">
-                                    <a href="blog-details.php" class="inline-flex items-center text-sm font-black text-locar-black hover:text-locar-orange transition uppercase tracking-wide">
+                                    <a href="blog-details.php?article=<?= $post["name"] ?>" class="inline-flex items-center text-sm font-black text-locar-black hover:text-locar-orange transition uppercase tracking-wide">
                                         Lire l'article <i class="fa-solid fa-arrow-right ml-2"></i>
                                     </a>
                                 </div>
