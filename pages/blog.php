@@ -130,7 +130,7 @@ $posts = $articleObj->getArticlesPerTheme();
                                     <?= $post['description'] ?>
                                 </p>
                                 <div class="mt-auto">
-                                    <a href="blog-details.php?article=<?= $post["name"] ?>" class="inline-flex items-center text-sm font-black text-locar-black hover:text-locar-orange transition uppercase tracking-wide">
+                                    <a href="blog-details.php?article=<?= $post["artid"] ?>" class="inline-flex items-center text-sm font-black text-locar-black hover:text-locar-orange transition uppercase tracking-wide">
                                         Lire l'article <i class="fa-solid fa-arrow-right ml-2"></i>
                                     </a>
                                 </div>
