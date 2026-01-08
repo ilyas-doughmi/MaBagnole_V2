@@ -1,39 +1,28 @@
 <?php
 require_once '../includes/guard.php';
-// Mock fetch single post based on ID
-$post_id = $_GET['id'] ?? 1;
+require_once '../classes/db.php';
+require_once "../Classes/Article.php";
 
-// Mock Data (Usually fetched from DB)
-$post = [
-    'title' => 'Top 5 des routes panoramiques au Maroc',
-    'category' => 'Voyage',
-    'image' => 'https://i.pinimg.com/736x/1d/d2/01/1dd201f98cc57d8f209bf48f5e817885.jpg',
-    'content' => '
-        <p>Le Maroc regorge de paysages diversifiés, des montagnes enneigées de l\'Atlas aux dunes dorées du Sahara, en passant par les côtes sauvages de l\'Atlantique. Pour les amateurs de conduite, c\'est un véritable paradis. Voici notre sélection des routes les plus spectaculaires à parcourir avec votre véhicule de location MaBagnole.</p>
-        
-        <h3>1. Le Col du Tizi n\'Tichka</h3>
-        <p>Reliant Marrakech à Ouarzazate, cette route de montagne est sans doute la plus célèbre du pays. Elle serpente à travers le Haut Atlas, offrant des virages en épingle exaltants et des panoramas à couper le souffle. Au sommet, à 2 260 mètres d\'altitude, la vue est imprenable.</p>
-        
-        <h3>2. La Route Côtière d\'Essaouira à Agadir</h3>
-        <p>Pour ceux qui préfèrent l\'océan, la route N1 longe la côte atlantique, traversant des forêts d\'arganiers et des villages de pêcheurs authentiques. C\'est l\'itinéraire idéal pour une décapotable ou un SUV confortable.</p>
-        
-        <blockquote>"La route n\'est pas qu\'un moyen de transport, c\'est une destination en soi."</blockquote>
-        
-        <h3>Conseils de conduite</h3>
-        <p>Avant de partir, assurez-vous de vérifier l\'état de votre véhicule. Nos agences à Marrakech et Casablanca proposent des véhicules parfaitement entretenus pour ces longs trajets. N\'oubliez pas de l\'eau et votre appareil photo !</p>
-    ',
-    'date' => '2025-06-15',
-    'author' => 'Amine T.',
-    'tags' => ['Roadtrip', 'Atlas', 'Nature', '4x4']
-];
+if (isset($_GET["article"]) && !empty($_GET["article"])) {
+    $db = DB::connect();
+    $articleObj = new Article($db);
+    $value = $_GET["article"];
+    $articleObj->__set("name", $value);
+    $post = $articleObj->getArticleDetails();
+    
+} else {
+    header("Location: blog.php");
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($post['title']) ?> | Blog MaBagnole</title>
-    
+    <title><?= $post["title"] ?> | Blog MaBagnole</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -79,14 +68,35 @@ $post = [
     </script>
     <style>
         /* Custom typography simulation since we might not have tailwind typography plugin */
-        .prose p { margin-bottom: 1.5rem; line-height: 1.8; }
-        .prose h3 { font-size: 1.5rem; font-weight: 800; color: #0a0a0a; margin-top: 2.5rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: -0.02em; }
-        .prose blockquote { border-left: 4px solid #FF3B00; padding-left: 1.5rem; font-style: italic; color: #555; margin: 2rem 0; }
+        .prose p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .prose h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0a0a0a;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        .prose blockquote {
+            border-left: 4px solid #FF3B00;
+            padding-left: 1.5rem;
+            font-style: italic;
+            color: #555;
+            margin: 2rem 0;
+        }
     </style>
 </head>
+
 <body class="bg-white text-brand-black antialiased selection:bg-brand-orange selection:text-white">
 
-    <?php $root_path = '../'; include 'header.php'; ?>
+    <?php $root_path = '../';
+    include 'header.php'; ?>
 
     <div class="fixed top-20 left-0 h-1 bg-brand-orange z-50 transition-all duration-300" id="progressBar" style="width: 0%"></div>
 
@@ -95,13 +105,13 @@ $post = [
             <div class="container mx-auto max-w-4xl text-center">
                 <div class="flex items-center justify-center gap-2 mb-6">
                     <span class="bg-brand-orange text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        <?= $post['category'] ?>
+                        <?= $post['theme_name'] ?>
                     </span>
                     <span class="text-gray-400 text-xs font-bold uppercase tracking-wider">
                         <?= date('d F Y', strtotime($post['date'])) ?>
                     </span>
                 </div>
-                
+
                 <h1 class="text-4xl md:text-6xl font-black uppercase mb-8 leading-tight text-brand-black">
                     <?= $post['title'] ?>
                 </h1>
@@ -120,13 +130,12 @@ $post = [
 
         <div class="container mx-auto max-w-5xl px-6 -mt-8">
             <div class="aspect-video rounded-3xl overflow-hidden shadow-2xl shadow-brand-black/10">
-                <img src="<?= $post['image'] ?>" class="w-full h-full object-cover">
+                <img src="<?= $post['media'] ?>" class="w-full h-full object-cover">
             </div>
         </div>
-
         <div class="container mx-auto max-w-3xl px-6 py-16">
             <div class="prose prose-lg text-gray-600 mx-auto">
-                <?= $post['content'] ?>
+                <?= $post['description'] ?>
             </div>
 
             <div class="mt-16 pt-8 border-t border-gray-100">
@@ -148,7 +157,7 @@ $post = [
                     </a>
                 </div>
             </div>
-        </div>
+        </div>  
     </article>
 
     <footer class="bg-white border-t border-gray-100 py-12">
@@ -169,4 +178,5 @@ $post = [
         };
     </script>
 </body>
+
 </html>
