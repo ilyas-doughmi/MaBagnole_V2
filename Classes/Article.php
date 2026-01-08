@@ -64,7 +64,7 @@ class article
 
     public function getArticlesPerTheme()
     {
-        $query = "SELECT * FROM articles JOIN users ON users.id = articles.author_id WHERE theme_id = :themeId AND isApproved = 1";
+        $query = "SELECT *,articles.id as artid FROM articles JOIN users ON users.id = articles.author_id WHERE theme_id = :themeId AND isApproved = 1";
         $stmt = $this->pdo->prepare($query);
         try {
             $stmt->execute([
@@ -131,13 +131,13 @@ public function getArticleDetails()
             FROM articles
             JOIN themes ON articles.theme_id = themes.id
             JOIN users ON users.id = articles.author_id
-            WHERE articles.name = :article_name";
+            WHERE articles.id = :id";
         $stmt = $this->pdo->prepare($query);
 
     try{
 
         $stmt->execute([
-            ":article_name" => $this->name
+            ":id" => $this->name
         ]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
 
