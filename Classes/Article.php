@@ -119,4 +119,30 @@ class article
             return false;
         }
     }
+
+public function getArticleDetails()
+{
+    $query = "
+        SELECT articles.*, 
+                   articles.name AS title,
+                   articles.createdAt AS date,
+                   themes.name AS theme_name, 
+                   users.full_name AS author
+            FROM articles
+            JOIN themes ON articles.theme_id = themes.id
+            JOIN users ON users.id = articles.author_id
+            WHERE articles.name = :article_name";
+        $stmt = $this->pdo->prepare($query);
+
+    try{
+
+        $stmt->execute([
+            ":article_name" => $this->name
+        ]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+
+    } catch (PDOException $e) {
+        return null; 
+    }
+}
 }
