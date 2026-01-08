@@ -2,11 +2,16 @@
 session_start();
 require_once "../Classes/db.php";
 require_once "../Classes/Article.php";
+require_once "../Classes/Theme.php";
 
 $db = DB::connect();
 $articleObj = new Article($db);
 if(isset($_GET["category"])){
     $articleObj->__set("themeId",$_GET["category"]);
+}
+else{
+    header("location: theme.php?msg=choose_theme_first");
+    exit();
 }
 $posts = $articleObj->getArticlesPerTheme();
 
@@ -125,7 +130,7 @@ $posts = $articleObj->getArticlesPerTheme();
                                     <?= $post['description'] ?>
                                 </p>
                                 <div class="mt-auto">
-                                    <a href="#" class="inline-flex items-center text-sm font-black text-locar-black hover:text-locar-orange transition uppercase tracking-wide">
+                                    <a href="blog-details.php" class="inline-flex items-center text-sm font-black text-locar-black hover:text-locar-orange transition uppercase tracking-wide">
                                         Lire l'article <i class="fa-solid fa-arrow-right ml-2"></i>
                                     </a>
                                 </div>
@@ -161,16 +166,20 @@ $posts = $articleObj->getArticlesPerTheme();
                     </div>
 
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h4 class="font-black text-lg uppercase mb-4">Catégories</h4>
+                        <h4 class="font-black text-lg uppercase mb-4">Thémes</h4>
                         <ul class="space-y-2">
-                            <?php 
-                            $categories = ['Conseils (12)', 'Voyage (8)', 'Mécanique (5)', 'Location (10)', 'Actualités (4)'];
+                            <?php
+                            $categoriesObj = new Theme($db);
+                            $categories = $categoriesObj->getThemes();
+                            
                             foreach($categories as $cat): 
+                            $articleObj->__set("themeId",$cat["id"]);
+                            $count = count($articleObj->getArticlesPerTheme());
                             ?>
                             <li>
                                 <a href="#" class="flex justify-between items-center text-gray-500 font-bold text-sm hover:text-locar-orange hover:bg-orange-50 p-2 rounded transition group">
-                                    <span><?= explode(' (', $cat)[0] ?></span>
-                                    <span class="bg-gray-100 text-gray-400 text-xs px-2 py-1 rounded group-hover:bg-locar-orange group-hover:text-white transition"><?= explode('(', $cat)[1] ?></span>
+                                    <span><?= $cat["name"] ?></span>
+                                    <span class="bg-gray-100 text-gray-400 text-xs px-2 py-1 rounded group-hover:bg-locar-orange group-hover:text-white transition"><?= $count ?></span>
                                 </a>
                             </li>
                             <?php endforeach; ?>
