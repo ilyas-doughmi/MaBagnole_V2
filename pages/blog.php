@@ -177,7 +177,7 @@ $posts = $articleObj->getArticlesPerTheme();
                             $count = count($articleObj->getArticlesPerTheme());
                             ?>
                             <li>
-                                <a href="#" class="flex justify-between items-center text-gray-500 font-bold text-sm hover:text-locar-orange hover:bg-orange-50 p-2 rounded transition group">
+                                <a href="blog.php?category=<?= $cat["id"] ?>" class="flex justify-between items-center text-gray-500 font-bold text-sm hover:text-locar-orange hover:bg-orange-50 p-2 rounded transition group">
                                     <span><?= $cat["name"] ?></span>
                                     <span class="bg-gray-100 text-gray-400 text-xs px-2 py-1 rounded group-hover:bg-locar-orange group-hover:text-white transition"><?= $count ?></span>
                                 </a>
