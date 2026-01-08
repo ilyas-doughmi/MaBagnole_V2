@@ -5,9 +5,12 @@ require_once "../Classes/Article.php";
 require_once "../Classes/Theme.php";
 
 $db = DB::connect();
-$articleObj = new Article($db);
 if(isset($_GET["category"])){
+    $articleObj = new Article($db);
     $articleObj->__set("themeId",$_GET["category"]);
+}
+else if(isset($_GET["tag"])){
+    echo "tag";
 }
 else{
     header("location: theme.php?msg=choose_theme_first");
