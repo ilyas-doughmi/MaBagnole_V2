@@ -2,6 +2,7 @@
 require_once '../includes/guard.php';
 require_once '../classes/db.php';
 require_once "../Classes/Article.php";
+require_once '../classes/ArticleTag.php';
 
 if (isset($_GET["article"]) && !empty($_GET["article"])) {
     $db = DB::connect();
@@ -9,11 +10,13 @@ if (isset($_GET["article"]) && !empty($_GET["article"])) {
     $value = $_GET["article"];
     $articleObj->__set("name", $value);
     $post = $articleObj->getArticleDetails();
+    $tags = ArticleTag::getArticleTags($db,$value);
     
 } else {
     header("Location: blog.php");
     exit;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
@@ -141,8 +144,8 @@ if (isset($_GET["article"]) && !empty($_GET["article"])) {
             <div class="mt-16 pt-8 border-t border-gray-100">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Thèmes associés</p>
                 <div class="flex flex-wrap gap-2">
-                    <?php foreach($post['tags'] as $tag): ?>
-                        <a href="blog.php?tag=<?= $tag ?>" class="px-4 py-2 bg-gray-50 hover:bg-brand-black hover:text-white rounded-lg text-xs font-bold transition text-gray-600">#<?= $tag ?></a>
+                    <?php foreach($tags as $tag): ?>
+                        <a href="blog.php?tag=<?= $tag["name"] ?>" class="px-4 py-2 bg-gray-50 hover:bg-brand-black hover:text-white rounded-lg text-xs font-bold transition text-gray-600">#<?= $tag["name"] ?></a>
                     <?php endforeach; ?>
                 </div>
             </div>
