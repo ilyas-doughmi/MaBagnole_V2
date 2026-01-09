@@ -180,18 +180,43 @@ if (isset($_GET["article"]) && !empty($_GET["article"])) {
                         <p class="text-gray-500 italic">Soyez le premier à commenter cet article !</p>
                     <?php else: ?>
                         <?php foreach($comments as $comment): ?>
-                        <div class="flex gap-4">
+                        <div class="flex gap-4" id="comment-<?= $comment['commentId'] ?>">
                             <div class="w-10 h-10 bg-gray-200 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-gray-400">
                                 <?= substr($comment['full_name'], 0, 1) ?>
                             </div>
                             <div class="flex-1">
-                                <div class="bg-gray-50 rounded-2xl p-6 rounded-tl-none">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <h4 class="font-bold text-brand-black"><?= $comment['full_name'] ?></h4>
-                                        <span class="text-xs font-bold text-gray-400"><?= date('d/m/Y', strtotime($comment['created_at'])) ?></span>
+                                <?php if(isset($_GET['edit_comment']) && $_GET['edit_comment'] == $comment['commentId'] && isset($_SESSION['id']) && $_SESSION['id'] == $comment['user_id']): ?>
+                                    <!-- Edit Form -->
+                                    <form action="update_comment.php" method="POST" class="bg-white border-2 border-brand-orange rounded-2xl p-6">
+                                        <h4 class="font-bold text-brand-orange uppercase mb-4 text-xs tracking-widest">Modifier le commentaire</h4>
+                                        <input type="hidden" name="article_id" value="<?= $value ?>">
+                                        <input type="hidden" name="comment_id" value="<?= $comment['commentId'] ?>">
+                                        <div class="mb-4">
+                                            <textarea name="content" rows="4" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 focus:outline-none focus:border-brand-orange transition" required><?= htmlspecialchars($comment['content']) ?></textarea>
+                                        </div>
+                                        <div class="flex justify-end gap-3">
+                                            <a href="blog-details.php?article=<?= $value ?>#comment-<?= $comment['commentId'] ?>" class="px-4 py-2 text-sm font-bold text-gray-500 hover:text-gray-800 transition">Annuler</a>
+                                            <button type="submit" class="bg-brand-orange text-white text-sm font-bold py-2 px-6 rounded-lg hover:bg-red-600 transition">
+                                                Sauvegarder
+                                            </button>
+                                        </div>
+                                    </form>
+                                <?php else: ?>
+                                    <!-- Display Comment -->
+                                    <div class="bg-gray-50 rounded-2xl p-6 rounded-tl-none relative group">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <h4 class="font-bold text-brand-black"><?= $comment['full_name'] ?></h4>
+                                            <span class="text-xs font-bold text-gray-400"><?= date('d/m/Y', strtotime($comment['created_at'])) ?></span>
+                                        </div>
+                                        <p class="text-gray-600 leading-relaxed"><?= htmlspecialchars($comment['content']) ?></p>
+                                        
+                                        <?php if(isset($_SESSION['id']) && $_SESSION['id'] == $comment['user_id']): ?>
+                                            <a href="?article=<?= $value ?>&edit_comment=<?= $comment['commentId'] ?>#comment-<?= $comment['commentId'] ?>" class="absolute top-4 right-4 text-gray-400 hover:text-brand-orange transition opacity-0 group-hover:opacity-100">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </a>
+                                        <?php endif; ?>
                                     </div>
-                                    <p class="text-gray-600 leading-relaxed"><?= htmlspecialchars($comment['content']) ?></p>
-                                </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <?php endforeach; ?>
