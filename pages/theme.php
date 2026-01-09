@@ -2,6 +2,9 @@
 session_start();
 require_once "../Classes/db.php";
 require_once "../Classes/Theme.php";
+require_once "../includes/guard.php";
+
+require_login();
 
 $db = DB::connect();
 $themeObj = new Theme($db);

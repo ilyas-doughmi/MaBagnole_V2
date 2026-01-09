@@ -5,6 +5,11 @@ require_once "../Classes/Article.php";
 require_once '../classes/ArticleTag.php';
 require_once '../Classes/Comment.php';
 
+require_once "../includes/guard.php";
+
+require_login();
+
+
 if (isset($_GET["article"]) && !empty($_GET["article"])) {
     $db = DB::connect();
     $articleObj = new Article($db);

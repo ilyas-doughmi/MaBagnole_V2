@@ -4,6 +4,11 @@ require_once "../Classes/db.php";
 require_once "../Classes/Article.php";
 require_once "../Classes/Theme.php";
 
+
+require_once "../includes/guard.php";
+
+require_login();
+
 $db = DB::connect();
 if(isset($_GET["category"])){
     $articleObj = new Article($db);

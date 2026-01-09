@@ -17,7 +17,6 @@ if (isset($_GET['id']) && isset($_GET['article'])) {
     $article_id = $_GET['article'];
     $user_id = $_SESSION["id"];
     
-    // Attempt to delete the comment (checks user ownership in the query)
     if ($commentObj->deleteComment($comment_id, $user_id)) {
         header("Location: blog-details.php?article=" . $article_id . "&msg=comment_deleted");
     } else {
