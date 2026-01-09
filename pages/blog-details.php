@@ -3,16 +3,19 @@ require_once '../includes/guard.php';
 require_once '../classes/db.php';
 require_once "../Classes/Article.php";
 require_once '../classes/ArticleTag.php';
+require_once '../Classes/Comment.php';
 
 if (isset($_GET["article"]) && !empty($_GET["article"])) {
     $db = DB::connect();
     $articleObj = new Article($db);
+    $commentObj = new Comment($db);
     $value = $_GET["article"];
     $articleObj->__set("name", $value);
     $post = $articleObj->getArticleDetails();
     $tags = ArticleTag::getArticleTags($db,$value);
+    $comments = $commentObj->getCommentsByArticleId($value);
     
-} else {
+} else {    
     header("Location: blog.php");
     exit;
 }
@@ -147,6 +150,52 @@ if (isset($_GET["article"]) && !empty($_GET["article"])) {
                     <?php foreach($tags as $tag): ?>
                         <a href="blog.php?tag=<?= $tag["name"] ?>" class="px-4 py-2 bg-gray-50 hover:bg-brand-black hover:text-white rounded-lg text-xs font-bold transition text-gray-600">#<?= $tag["name"] ?></a>
                     <?php endforeach; ?>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="mt-16 pt-12 border-t border-gray-100" id="comments">
+                <h3 class="text-2xl font-black text-brand-black uppercase mb-8">Commentaires (<?= count($comments) ?>)</h3>
+                
+                <?php if(isset($_SESSION['id'])): ?>
+                <form action="submit_comment.php" method="POST" class="mb-12 bg-gray-50 p-6 rounded-2xl">
+                    <input type="hidden" name="article_id" value="<?= $value ?>">
+                    <div class="mb-4">
+                        <label for="content" class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Votre commentaire</label>
+                        <textarea name="content" id="content" rows="4" class="w-full bg-white border border-gray-200 rounded-xl p-4 focus:outline-none focus:border-brand-orange transition" placeholder="Partagez votre avis..." required></textarea>
+                    </div>
+                    <button type="submit" class="bg-brand-orange text-white font-bold py-3 px-8 rounded-xl hover:bg-red-600 transition shadow-lg shadow-brand-orange/20">
+                        Publier
+                    </button>
+                </form>
+                <?php else: ?>
+                <div class="bg-gray-50 p-6 rounded-2xl mb-12 text-center">
+                    <p class="text-gray-600 mb-4">Connectez-vous pour participer à la discussion.</p>
+                    <a href="login.php" class="inline-block bg-brand-black text-white font-bold py-3 px-8 rounded-xl hover:bg-brand-orange transition">Se connecter</a>
+                </div>
+                <?php endif; ?>
+
+                <div class="space-y-8">
+                    <?php if(empty($comments)): ?>
+                        <p class="text-gray-500 italic">Soyez le premier à commenter cet article !</p>
+                    <?php else: ?>
+                        <?php foreach($comments as $comment): ?>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 bg-gray-200 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-gray-400">
+                                <?= substr($comment['full_name'], 0, 1) ?>
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-gray-50 rounded-2xl p-6 rounded-tl-none">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-bold text-brand-black"><?= $comment['full_name'] ?></h4>
+                                        <span class="text-xs font-bold text-gray-400"><?= date('d/m/Y', strtotime($comment['created_at'])) ?></span>
+                                    </div>
+                                    <p class="text-gray-600 leading-relaxed"><?= htmlspecialchars($comment['content']) ?></p>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
 
