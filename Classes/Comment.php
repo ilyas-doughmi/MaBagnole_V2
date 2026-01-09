@@ -63,4 +63,18 @@ class Comment {
             return false;
         }
     }
+
+    public function deleteComment($commentId, $userId)
+    {
+        $query = "DELETE FROM comments WHERE commentId = :commentId AND user_id = :user_id";
+        $stmt = $this->pdo->prepare($query);
+        try {
+            return $stmt->execute([
+                ':commentId' => $commentId,
+                ':user_id' => $userId
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
