@@ -211,9 +211,14 @@ if (isset($_GET["article"]) && !empty($_GET["article"])) {
                                         <p class="text-gray-600 leading-relaxed"><?= htmlspecialchars($comment['content']) ?></p>
                                         
                                         <?php if(isset($_SESSION['id']) && $_SESSION['id'] == $comment['user_id']): ?>
-                                            <a href="?article=<?= $value ?>&edit_comment=<?= $comment['commentId'] ?>#comment-<?= $comment['commentId'] ?>" class="absolute top-4 right-4 text-gray-400 hover:text-brand-orange transition opacity-0 group-hover:opacity-100">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                            </a>
+                                            <div class="absolute top-4 right-4 flex gap-3 opacity-0 group-hover:opacity-100 transition">
+                                                <a href="?article=<?= $value ?>&edit_comment=<?= $comment['commentId'] ?>#comment-<?= $comment['commentId'] ?>" class="text-gray-400 hover:text-brand-orange transition" title="Modifier">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </a>
+                                                <a href="delete_comment.php?id=<?= $comment['commentId'] ?>&article=<?= $value ?>" class="text-gray-400 hover:text-red-500 transition" title="Supprimer" onclick="return confirm('Voulez-vous vraiment supprimer ce commentaire ?')">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </a>
+                                            </div>
                                         <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
