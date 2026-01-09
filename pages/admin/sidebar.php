@@ -30,6 +30,9 @@ function isActiveAdmin($page, $current) {
         <a href="articles.php" class="block px-6 py-3 <?= isActiveAdmin('articles.php', $current_page) ?>">
             <i class="fa-solid fa-newspaper w-6"></i> Articles
         </a>
+        <a href="comments.php" class="block px-6 py-3 <?= isActiveAdmin('comments.php', $current_page) ?>">
+            <i class="fa-solid fa-comments w-6"></i> Commentaires
+        </a>
         <a href="reservations.php" class="block px-6 py-3 <?= isActiveAdmin('reservations.php', $current_page) ?>">
             <i class="fa-solid fa-calendar-check w-6"></i> Réservations
         </a>
