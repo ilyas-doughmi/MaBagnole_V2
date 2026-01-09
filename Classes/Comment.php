@@ -49,4 +49,18 @@ class Comment {
             return [];
         }
     }
+
+    public function updateComment($commentId, $content, $userId) {
+        $query = "UPDATE comments SET content = :content, update_at = NOW() WHERE commentId = :commentId AND user_id = :user_id";
+        $stmt = $this->pdo->prepare($query);
+        try {
+            return $stmt->execute([
+                ':content' => $content,
+                ':commentId' => $commentId,
+                ':user_id' => $userId
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
