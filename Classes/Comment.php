@@ -34,4 +34,19 @@ class Comment {
             return false;
         }
     }
+    
+    public function getCommentsByArticleId($article_id) {
+        $query = "SELECT c.*, u.full_name 
+                  FROM comments c 
+                  JOIN users u ON c.user_id = u.id 
+                  WHERE c.article_id = :article_id 
+                  ORDER BY c.created_at DESC";
+        $stmt = $this->pdo->prepare($query);
+        try {
+             $stmt->execute([':article_id' => $article_id]);
+             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
 }
