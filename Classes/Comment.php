@@ -77,4 +77,29 @@ class Comment {
             return false;
         }
     }
+
+    public function getAllComments() {
+        $query = "SELECT c.*, u.full_name, a.name as article_title 
+                  FROM comments c 
+                  JOIN users u ON c.user_id = u.id 
+                  JOIN articles a ON c.article_id = a.id
+                  ORDER BY c.created_at DESC";
+        $stmt = $this->pdo->prepare($query);
+        try {
+             $stmt->execute();
+             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    public function deleteCommentById($commentId) {
+        $query = "DELETE FROM comments WHERE commentId = :commentId";
+        $stmt = $this->pdo->prepare($query);
+        try {
+            return $stmt->execute([':commentId' => $commentId]);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
